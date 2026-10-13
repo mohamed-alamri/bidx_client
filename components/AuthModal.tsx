@@ -1,8 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { UserSession, loginWithGoogle, loginAsGuest, adminSecretLogin } from "./apiService";
-
+import {
+  UserSession,
+  loginWithGoogle,
+  loginAsGuest,
+  adminSecretLogin,
+} from "./apiService";
+// auth
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -32,11 +37,15 @@ export default function AuthModal({
       const mockGoogleUser = {
         email: email || "user.studio@gmail.com",
         name: name || "محمد العمري",
-        picture: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80",
+        picture:
+          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80",
         id: `google_id_${Date.now()}`,
       };
 
-      const res = await loginWithGoogle(googleClientToken || "simulated_google_token", mockGoogleUser);
+      const res = await loginWithGoogle(
+        googleClientToken || "simulated_google_token",
+        mockGoogleUser,
+      );
       localStorage.setItem("bidx_token", res.token);
       localStorage.setItem("bidx_user", JSON.stringify(res.user));
       onLoginSuccess(res.user, res.token);
@@ -78,7 +87,10 @@ export default function AuthModal({
     setIsLoading(true);
     setError(null);
     try {
-      const res = await adminSecretLogin(secretKey, email || "admin@bidx-studio.com");
+      const res = await adminSecretLogin(
+        secretKey,
+        email || "admin@bidx-studio.com",
+      );
       localStorage.setItem("bidx_token", res.token);
       localStorage.setItem("bidx_user", JSON.stringify(res.user));
       onLoginSuccess(res.user, res.token);
@@ -181,12 +193,18 @@ export default function AuthModal({
                   d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.24 6.58l4.04 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
                 />
               </svg>
-              <span>{isLoading ? "جاري تسجيل الدخول..." : "المتابعة باستخدام Google"}</span>
+              <span>
+                {isLoading
+                  ? "جاري تسجيل الدخول..."
+                  : "المتابعة باستخدام Google"}
+              </span>
             </button>
 
             <div className="flex items-center gap-3 my-1">
               <div className="flex-1 h-px bg-zinc-800" />
-              <span className="text-[11px] text-zinc-500">أو تخصيص بيانات التجربة</span>
+              <span className="text-[11px] text-zinc-500">
+                أو تخصيص بيانات التجربة
+              </span>
               <div className="flex-1 h-px bg-zinc-800" />
             </div>
 
@@ -242,7 +260,12 @@ export default function AuthModal({
         {mode === "admin" && (
           <form onSubmit={handleAdminSecret} className="flex flex-col gap-3">
             <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[11px] leading-relaxed">
-              🔐 ادخل الرمز السري للمدير للوصول للوحة التحكم الكاملة وإدارة الصور والطلبات. (الافتراضي: <code className="font-mono font-bold">bidx_admin_secret_pass_2026</code>)
+              🔐 ادخل الرمز السري للمدير للوصول للوحة التحكم الكاملة وإدارة
+              الصور والطلبات. (الافتراضي:{" "}
+              <code className="font-mono font-bold">
+                bidx_admin_secret_pass_2026
+              </code>
+              )
             </div>
             <input
               type="password"
@@ -264,7 +287,9 @@ export default function AuthModal({
               disabled={isLoading}
               className="w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-bold text-xs transition-all shadow-lg active:scale-98 disabled:opacity-50"
             >
-              {isLoading ? "جاري التخويل..." : "الدخول بصلاحية الإدارة (Admin Login)"}
+              {isLoading
+                ? "جاري التخويل..."
+                : "الدخول بصلاحية الإدارة (Admin Login)"}
             </button>
           </form>
         )}
